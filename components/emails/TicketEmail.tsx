@@ -79,7 +79,7 @@ export default function TicketEmail({
 
                                 {/* Event Flyer Image */}
                                 <Img
-                                    src="https://raw.githubusercontent.com/impcorecl/ticket-manager-mv/main/public/flyer.png?v=3"
+                                    src="https://ticket-manager-mv.vercel.app/flyer.png"
                                     width="400"
                                     alt="IMPCORE RECORDS ANIVERSARIO"
                                     className="w-full object-cover border-b border-gray-200"
