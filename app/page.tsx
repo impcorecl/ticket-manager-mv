@@ -75,6 +75,16 @@ export default function Home() {
         timestamp: new Date(data[0].created_at).getTime(),
       };
       setSales((prev) => [...prev, savedSale]);
+
+      // Trigger Email Sending (Fire and forget, or await?)
+      // Let's fire and forget so UI doesn't block, but log error if any
+      fetch('/api/send-ticket', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ sale: savedSale }),
+      }).then(res => {
+        if (!res.ok) console.error('Failed to send emails');
+      });
     }
   };
 
