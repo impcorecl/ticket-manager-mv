@@ -132,7 +132,10 @@ export default function Home() {
                 <p className="text-xl font-bold text-white">{totalAttendees}</p>
               </div>
             </div>
-            <div className="mt-2">
+            <div className="mt-2 flex gap-2">
+              <Link href="/scan" className="bg-gray-800 text-white p-2 rounded hover:bg-gray-700 flex items-center justify-center border border-gray-700" title="Escáner QR">
+                <p className="text-xl">🎯</p>
+              </Link>
               <ResetButton onReset={handleReset} />
             </div>
           </div>
