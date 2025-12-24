@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { Sale } from '@/types';
 import TicketForm from '@/components/TicketForm';
 import SalesList from '@/components/SalesList';
