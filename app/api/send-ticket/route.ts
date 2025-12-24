@@ -23,7 +23,7 @@ export async function POST(request: Request) {
 
             // Send Email with Attachment
             return resend.emails.send({
-                from: 'Ticket Manager <onboarding@resend.dev>',
+                from: 'IMP CORE RECORDS <entradas@impcore.cl>',
                 to: [attendee.email],
                 subject: `Tus tickets para ${sale.ticketType.label}`,
                 react: TicketEmail({
