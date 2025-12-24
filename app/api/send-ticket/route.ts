@@ -15,9 +15,8 @@ export async function POST(request: Request) {
                 return null; // Skip if no email
             }
 
-            // Generate QR Code Buffer
-            // We remove the header 'data:image/png;base64,' to get raw buffer for attachment
-            const qrCodeDataUrl = await QRCode.toDataURL(attendee.id);
+            // Generate QR Code Buffer with High Quality
+            const qrCodeDataUrl = await QRCode.toDataURL(attendee.id, { width: 600, margin: 2 });
             const base64Data = qrCodeDataUrl.replace(/^data:image\/png;base64,/, "");
             const qrBuffer = Buffer.from(base64Data, 'base64');
 
@@ -25,18 +24,16 @@ export async function POST(request: Request) {
             return resend.emails.send({
                 from: 'IMP CORE RECORDS <entradas@impcore.cl>',
                 to: [attendee.email],
-                subject: `Tus tickets para ${sale.ticketType.label}`,
+                subject: `Ticket: ${sale.ticketType.label} - ${attendee.fullName}`,
                 react: TicketEmail({
                     attendeeName: attendee.fullName,
                     ticketType: sale.ticketType.label,
                     ticketId: attendee.id,
-                    qrCode: 'cid:qrcode-attachment', // Reference the content ID
                 }),
                 attachments: [
                     {
-                        filename: 'qrcode.png',
+                        filename: `ticket_${attendee.id.slice(0, 8)}.png`,
                         content: qrBuffer,
-                        content_id: 'qrcode-attachment', // Removing brackets
                     } as any,
                 ],
             });

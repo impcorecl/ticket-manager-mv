@@ -18,7 +18,7 @@ interface TicketEmailProps {
     attendeeName: string;
     ticketType: string;
     ticketId: string;
-    qrCode: string; // Base64 data url
+    // qrCode prop removed as it is now attachment only
     eventDetails?: {
         name: string;
         date: string;
@@ -30,7 +30,7 @@ export default function TicketEmail({
     attendeeName,
     ticketType,
     ticketId,
-    qrCode, // Now expects a CID (Content-ID) or URL
+    // qrCode, 
     eventDetails = {
         name: 'IMPCORE RECORDS: 2 AÑOS DE MÚSICA',
         date: 'Viernes, 2 de Enero - 23:00hrs',
@@ -86,8 +86,9 @@ export default function TicketEmail({
                                 />
 
                                 <Section className="p-6 text-center">
-                                    {/* QR Code Image - Now using standard img tag, calling CID in API route logic */}
-                                    <Img src={qrCode} width="250" height="250" alt="Código QR de Acceso" className="mx-auto mb-4 border border-gray-200 p-2 rounded" />
+                                    <Text className="text-sm text-gray-500 mb-4">
+                                        (Tu código QR está adjunto a este correo 📎)
+                                    </Text>
 
                                     <Heading as="h2" className="text-xl font-bold text-gray-900 m-0 mb-1">
                                         {eventDetails.name}
