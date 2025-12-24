@@ -32,22 +32,19 @@ export async function POST(request: Request) {
                     ticketId: attendee.id,
                     qrCode: 'cid:qrcode-attachment', // Reference the content ID
                 }),
-                attachments: [
                     {
-                        filename: 'qrcode.png',
-                        content: qrBuffer,
-                        // Fix for Gmail: Content-ID usually needs angle brackets <id> to be referenced as cid:id
-                        content_id: '<qrcode-attachment>',
-                    } as any,
-                ],
+                    filename: 'qrcode.png',
+                    content: qrBuffer,
+                    content_id: 'qrcode-attachment', // Removing brackets, trusting Resend/Nodemailer to add them
+                } as any, 
             });
-        });
+    });
 
-        await Promise.all(emailPromises);
+    await Promise.all(emailPromises);
 
-        return NextResponse.json({ success: true });
-    } catch (error) {
-        console.error('Email error:', error);
-        return NextResponse.json({ error: 'Failed to send emails' }, { status: 500 });
-    }
+    return NextResponse.json({ success: true });
+} catch (error) {
+    console.error('Email error:', error);
+    return NextResponse.json({ error: 'Failed to send emails' }, { status: 500 });
+}
 }
