@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { Scanner } from '@yudiel/react-qr-scanner';
-import { createClient } from '@/lib/supabaseClient';
+import { supabase } from '@/lib/supabaseClient';
 import { ArrowLeft, CheckCircle, XCircle, RefreshCcw } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -12,7 +12,7 @@ export default function ScanPage() {
     const [message, setMessage] = useState('');
     const [attendeeData, setAttendeeData] = useState<any>(null);
     const [scannedId, setScannedId] = useState<string>('');
-    const supabase = createClient();
+    // const supabase = createClient(); // Already imported
     const router = useRouter();
 
     const handleScan = async (text: string) => {
@@ -132,10 +132,15 @@ export default function ScanPage() {
             <div className="w-full max-w-md relative bg-gray-900 rounded-xl overflow-hidden aspect-square ring-2 ring-gray-800 shadow-2xl mb-6">
                 {status === 'idle' || status === 'loading' ? (
                     <Scanner
-                        onResult={(result) => handleScan(result)}
-                        onError={(error) => console.log(error?.message)}
-                        options={{
-                            delayBetweenScanAttempts: 2000,
+                        onScan={(results) => {
+                            if (results && results.length > 0) {
+                                handleScan(results[0].rawValue);
+                            }
+                        }}
+                        onError={(error: unknown) => {
+                            // Type guard for error
+                            const msg = error instanceof Error ? error.message : 'Unknown error';
+                            console.log(msg);
                         }}
                     />
                 ) : (
