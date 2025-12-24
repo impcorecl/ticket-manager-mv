@@ -30,13 +30,18 @@ export default function TicketEmail({
     attendeeName,
     ticketType,
     ticketId,
-    qrCode,
+    qrCode, // Now expects a CID (Content-ID) or URL
     eventDetails = {
-        name: 'IMMERSIVE CINEMA: WHITE SHADOWS',
-        date: 'Viernes, 28 de Noviembre 2025 - 21:00hrs',
-        location: 'Club Berlín Av. Vicuña Mackenna 1695'
+        name: 'IMPCORE RECORDS: 2 AÑOS DE MÚSICA',
+        date: 'Viernes, 2 de Enero - 23:00hrs',
+        location: 'Espacio Underclub, Errázuriz 1024, Valparaíso'
     }
 }: TicketEmailProps) {
+
+    // Logic to determine valid access time based on ticket type
+    const accessTime = ticketType.includes('AGUAS') ? '01:00 AM' : '00:00 AM';
+    const extras = ticketType.includes('AGUAS') ? 'Incluye: 4 Aguas + Guardarropía' : 'Acceso General';
+
     return (
         <Html>
             <Tailwind
@@ -57,31 +62,14 @@ export default function TicketEmail({
 
                         {/* Header / Logo */}
                         <Section className="bg-black p-5 rounded-t-lg text-center">
-                            <Img
-                                src="https://raw.githubusercontent.com/impcorecl/ticket-manager-mv/main/public/logo.jpg"
-                                alt="IMP CORE RECORDS"
-                                width="150"
-                                className="mx-auto filter invert"
-                                style={{ filter: 'invert(1)' }}
-                            />
-                            {/* Note: Startups often use public URLs for logo in emails. Localhost won't work in email clients. 
-                  I'm using a placeholder public URL assuming they push to the repo I just saw. 
-                  Ideally, we'd use the deployed Vercel URL, but I don't have it yet. 
-                  Use text fallback if image breaks? Or maybe base64? Base64 support is spotty in emails. 
-                  For now I'll use a placeholder or try to point to the repo raw content if it exists. 
-                  Wait, the user just pushed to https://github.com/impcorecl/ticket-manager-mv.git 
-                  So I can link to the raw image there if I commit it. I haven't committed the logo yet.
-                  I will use a generic placeholder or no image for safety if I can't guarantee URL. 
-                  Actually, user uploaded logo. I will use a placeholder text if I can't serve it. 
-                  Let's try to host it on vercel? Vercel public url.
-                  Let's use a solid styling fallback. 
-              */}
+                            <Heading className="text-white text-2xl font-bold tracking-widest text-center m-0">IMP CORE</Heading>
+                            <Text className="text-gray-400 text-xs tracking-widest m-0">RECORDS</Text>
                         </Section>
 
                         {/* Greeting */}
                         <Section className="px-5 py-6 bg-gray-50 text-center border-x border-gray-200">
                             <Text className="text-base leading-6 text-gray-700">
-                                <span className="font-bold text-black">{attendeeName}</span>, ¡Te han enviado los siguientes Ticket(s)!
+                                <span className="font-bold text-black">{attendeeName}</span>, ¡Aquí tienes tu acceso!
                             </Text>
                         </Section>
 
@@ -90,28 +78,48 @@ export default function TicketEmail({
                             <Container className="bg-white mx-auto max-w-[400px] border border-gray-300 rounded-lg overflow-hidden shadow-sm my-4">
 
                                 {/* Event Image (Optional/Placeholder) */}
-                                <Section className="bg-black h-32 flex items-center justify-center">
-                                    <Heading className="text-white text-xl font-bold tracking-widest text-center m-0">IMMERSE</Heading>
+                                <Section className="bg-black h-24 flex items-center justify-center">
+                                    <Heading className="text-white text-lg font-bold tracking-widest text-center m-0 uppercase">ANIVERSARIO 2 AÑOS</Heading>
                                 </Section>
 
                                 <Section className="p-6 text-center">
-                                    <Img src={qrCode} width="180" height="180" alt="QR Code" className="mx-auto mb-4" />
+                                    {/* QR Code Image - Now using standard img tag, calling CID in API route logic */}
+                                    <Img src={qrCode} width="200" height="200" alt="Código QR de Acceso" className="mx-auto mb-4 border border-gray-200 p-2 rounded" />
 
-                                    <Heading as="h2" className="text-lg font-bold text-gray-900 m-0 mb-1">
+                                    <Heading as="h2" className="text-xl font-bold text-gray-900 m-0 mb-1">
                                         {eventDetails.name}
                                     </Heading>
-                                    <Text className="text-lg text-gray-600 m-0 mb-4 font-medium uppercase">
+
+                                    <Text className="text-lg text-brand font-bold m-0 mb-2 uppercase">
                                         {ticketType}
                                     </Text>
 
-                                    <Text className="text-sm text-red-600 font-bold m-0 mb-2">
-                                        Válido para: 1 Persona
-                                    </Text>
+                                    <Section className="bg-red-50 border border-red-100 rounded p-2 mb-4 inline-block">
+                                        <Text className="text-sm text-red-600 font-bold m-0 uppercase">
+                                            🔴 Ingreso válido hasta: {accessTime}
+                                        </Text>
+                                        <Text className="text-xs text-red-500 m-0 mt-1">
+                                            {extras}
+                                        </Text>
+                                    </Section>
 
-                                    <Section className="bg-gray-50 rounded p-3 text-xs text-gray-500 mt-4 border border-gray-100">
-                                        <Text className="m-0 mb-1">ID Ticket: <span className="font-mono text-gray-800">{ticketId.slice(0, 8).toUpperCase()}</span></Text>
-                                        <Text className="m-0">{eventDetails.date}</Text>
-                                        <Text className="m-0">{eventDetails.location}</Text>
+                                    <Section className="bg-gray-50 rounded p-4 text-xs text-gray-500 border border-gray-100 text-left space-y-2">
+                                        <Row>
+                                            <Column className="w-1/4 font-bold text-gray-700">FECHA</Column>
+                                            <Column>VIERNES 02 ENERO</Column>
+                                        </Row>
+                                        <Row>
+                                            <Column className="w-1/4 font-bold text-gray-700">LUGAR</Column>
+                                            <Column>Espacio Underclub (Errázuriz 1024)</Column>
+                                        </Row>
+                                        <Row>
+                                            <Column className="w-1/4 font-bold text-gray-700">LINE UP</Column>
+                                            <Column>Bounce2Bounce, Nvsvc, Spc.musik & más</Column>
+                                        </Row>
+                                        <Row>
+                                            <Column className="w-1/4 font-bold text-gray-700">TICKET ID</Column>
+                                            <Column className="font-mono text-gray-800">{ticketId.slice(0, 8).toUpperCase()}</Column>
+                                        </Row>
                                     </Section>
                                 </Section>
 
@@ -120,14 +128,13 @@ export default function TicketEmail({
 
                         {/* Footer */}
                         <Section className="bg-white border-x border-b border-gray-200 rounded-b-lg p-6 text-center">
-                            <Text className="text-xs text-gray-400 m-0">
+                            <Text className="text-xs text-gray-400 m-0 mb-2">
                                 Producido por IMP CORE RECORDS
                             </Text>
+                            <Link href="https://instagram.com/impcore.cl" className="text-xs text-blue-500 underline">
+                                @impcore
+                            </Link>
                         </Section>
-
-                        <Text className="text-center text-xs text-gray-400 mt-4">
-                            Si tienes dudas contacta a soporte@impcore.cl
-                        </Text>
 
                     </Container>
                 </Body>
