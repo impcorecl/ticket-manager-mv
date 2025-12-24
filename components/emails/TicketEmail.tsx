@@ -77,14 +77,17 @@ export default function TicketEmail({
                         <Section className="bg-gray-100 p-0 border-x border-gray-200">
                             <Container className="bg-white mx-auto max-w-[400px] border border-gray-300 rounded-lg overflow-hidden shadow-sm my-4">
 
-                                {/* Event Image (Optional/Placeholder) */}
-                                <Section className="bg-black h-24 flex items-center justify-center">
-                                    <Heading className="text-white text-lg font-bold tracking-widest text-center m-0 uppercase">ANIVERSARIO 2 AÑOS</Heading>
-                                </Section>
+                                {/* Event Flyer Image */}
+                                <Img
+                                    src="https://raw.githubusercontent.com/impcorecl/ticket-manager-mv/main/public/flyer.png?v=3"
+                                    width="400"
+                                    alt="IMPCORE RECORDS ANIVERSARIO"
+                                    className="w-full object-cover border-b border-gray-200"
+                                />
 
                                 <Section className="p-6 text-center">
                                     {/* QR Code Image - Now using standard img tag, calling CID in API route logic */}
-                                    <Img src={qrCode} width="200" height="200" alt="Código QR de Acceso" className="mx-auto mb-4 border border-gray-200 p-2 rounded" />
+                                    <Img src={qrCode} width="250" height="250" alt="Código QR de Acceso" className="mx-auto mb-4 border border-gray-200 p-2 rounded" />
 
                                     <Heading as="h2" className="text-xl font-bold text-gray-900 m-0 mb-1">
                                         {eventDetails.name}
