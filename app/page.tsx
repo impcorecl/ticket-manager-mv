@@ -5,6 +5,7 @@ import { Sale } from '@/types';
 import TicketForm from '@/components/TicketForm';
 import SalesList from '@/components/SalesList';
 import ExportButtons from '@/components/ExportButtons';
+import ResetButton from '@/components/ResetButton';
 import { Sparkles, TicketCheck, RefreshCw } from 'lucide-react';
 import { supabase } from '@/lib/supabaseClient';
 
@@ -77,6 +78,10 @@ export default function Home() {
     }
   };
 
+  const handleReset = () => {
+    setSales([]);
+  };
+
   const totalRevenue = sales.reduce((acc, sale) => acc + sale.ticketType.price, 0);
   const totalAttendees = sales.reduce((acc, sale) => acc + sale.ticketType.capacity, 0);
 
@@ -105,13 +110,20 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="flex flex-col items-end gap-2">
-            <div className="text-right">
-              <p className="text-sm text-gray-400">Total Recaudado</p>
-              <p className="text-3xl font-bold text-emerald-400">${totalRevenue.toLocaleString('es-CL')}</p>
+          <div className="flex flex-col md:items-end gap-2 text-left md:text-right">
+            <div className="flex items-center gap-4">
+              <div>
+                <p className="text-sm text-gray-400">Total Recaudado</p>
+                <p className="text-3xl font-bold text-emerald-400">${totalRevenue.toLocaleString('es-CL')}</p>
+              </div>
+              <div className="hidden sm:block w-px h-10 bg-white/10"></div>
+              <div>
+                <p className="text-sm text-gray-400">Total Asistentes</p>
+                <p className="text-xl font-bold text-white">{totalAttendees}</p>
+              </div>
             </div>
-            <div className="text-right">
-              <p className="text-sm text-gray-400">Total Asistentes: <span className="text-white font-bold">{totalAttendees}</span></p>
+            <div className="mt-2">
+              <ResetButton onReset={handleReset} />
             </div>
           </div>
         </header>
@@ -145,6 +157,7 @@ export default function Home() {
           </section>
 
         </main>
+
       </div>
     </div>
   );
