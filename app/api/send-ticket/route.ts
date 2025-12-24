@@ -36,23 +36,8 @@ export async function POST(request: Request) {
                     {
                         filename: 'qrcode.png',
                         content: qrBuffer,
-                        // Fix: The SDK type is Likely contentId (camelCase) or headers with Content-ID
-                        // Checking Resend types, it seems easy to just pass headers if contentId property is not direct on Attachment interface
-                        // But wait, the standard usually supports contentId. 
-                        // Let's check Resend Node SDK. It uses 'content_id' in API but maybe 'contentId' in TS?
-                        // Actually, Resend attachments usually are { filename, content }. 
-                        // To clear the error and ensure it works, we should check definitions.
-                        // But standard node mailers use `cid`.
-                        // Let's try `path` or logic. 
-                        // Actually, looking at Resend docs:
-                        // attachments: [{ filename: 'x.png', content: buffer }]
-                        // It does not explicitly document inline images easily via SDK types sometimes.
-                        // However, let's try 'contentId' as suggested by the linter if it exists.
-                        // If linter says 'content_id' does not exist, and suggests 'contentId' (it did not suggest, it just said it does not exist).
-                        // Wait, Resend SDK attachment type:
-                        // interface Attachment { content?: string | Buffer; filename?: string; path?: string; contentType?: string; }
-                        // It might NOT support content_id directly in the strict type yet?
-                        // Workaround: cast to any to force it, as the API DOES support it for inline images.
+                        // Fix for Gmail: Content-ID usually needs angle brackets <id> to be referenced as cid:id
+                        content_id: '<qrcode-attachment>',
                     } as any,
                 ],
             });
