@@ -29,12 +29,15 @@ export default function Home() {
       // Map DB snake_case to TS camelCase if needed, or matched types
       // DB: ticket_type, attendees
       // TS: ticketType, attendees
-      const mappedSales: Sale[] = data.map((row: any) => ({
-        id: row.id,
-        ticketType: row.ticket_type,
-        attendees: row.attendees,
-        timestamp: new Date(row.created_at).getTime(),
-      }));
+      // Filter out courtesy tickets (user doesn't want them in sales list)
+      const mappedSales: Sale[] = data
+        .filter((row: any) => row.ticket_type?.id !== 'CORTESIA')
+        .map((row: any) => ({
+          id: row.id,
+          ticketType: row.ticket_type,
+          attendees: row.attendees,
+          timestamp: new Date(row.created_at).getTime(),
+        }));
       setSales(mappedSales);
     }
     setLoading(false);

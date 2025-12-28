@@ -21,7 +21,7 @@ export default function BulkCourtesyButton() {
     const cortesiaTicket = TICKET_OPTIONS.find(t => t.id === 'CORTESIA');
 
     // Split into batches
-    const batches = [];
+    const batches: CourtesyRecipient[][] = [];
     for (let i = 0; i < COURTESY_LIST.length; i += BATCH_SIZE) {
         batches.push(COURTESY_LIST.slice(i, i + BATCH_SIZE));
     }
@@ -141,8 +141,8 @@ export default function BulkCourtesyButton() {
                                     }}
                                     disabled={isSent}
                                     className={`w-full p-4 rounded-xl border-2 transition-all text-left ${isSent
-                                            ? 'bg-green-900/20 border-green-700 cursor-not-allowed'
-                                            : 'bg-gray-800 border-gray-700 hover:border-purple-500 hover:bg-gray-700'
+                                        ? 'bg-green-900/20 border-green-700 cursor-not-allowed'
+                                        : 'bg-gray-800 border-gray-700 hover:border-purple-500 hover:bg-gray-700'
                                         }`}
                                 >
                                     <div className="flex items-center justify-between">
