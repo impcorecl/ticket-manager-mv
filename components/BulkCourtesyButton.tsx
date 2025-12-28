@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { COURTESY_LIST } from '@/lib/courtesyList';
+import { COURTESY_LIST, CourtesyRecipient } from '@/lib/courtesyList';
 import { TICKET_OPTIONS } from '@/types';
 import { supabase } from '@/lib/supabaseClient';
 import { Mail, Loader2, CheckCircle, XCircle, Users } from 'lucide-react';
