@@ -6,6 +6,7 @@ import { Sale } from '@/types';
 import TicketForm from '@/components/TicketForm';
 import SalesList from '@/components/SalesList';
 import ExportButtons from '@/components/ExportButtons';
+import BulkCourtesyButton from '@/components/BulkCourtesyButton';
 import ResetButton from '@/components/ResetButton';
 import { Sparkles, TicketCheck, RefreshCw } from 'lucide-react';
 import { supabase } from '@/lib/supabaseClient';
@@ -159,6 +160,11 @@ export default function Home() {
                 <p className="text-sm text-gray-400">Exporta la información para control en puerta y contabilidad.</p>
               </div>
               <ExportButtons sales={sales} />
+            </div>
+
+            {/* Bulk Courtesy Mailing */}
+            <div className="glass p-6 rounded-2xl">
+              <BulkCourtesyButton />
             </div>
 
             {/* Sales List */}
